@@ -1,8 +1,7 @@
 ﻿<Window x:Class="puzzler.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Picture Puzzle" Height="600" Width="800"
-        AllowDrop="True">
+        Title="Picture Puzzle" Height="600" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -14,8 +13,10 @@
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Canvas Name="PuzzleArea" Background="LightGray" Grid.Column="0" AllowDrop="True" Drop="PuzzleArea_Drop"/>
-            <WrapPanel Name="PiecesPanel" Grid.Column="1" Background="LightBlue"/>
+            <Canvas Name="PuzzleArea" Background="LightGray" Drop="PuzzleArea_Drop" AllowDrop="True" Grid.Column="0" />
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <WrapPanel Name="PiecesPanel" Background="LightBlue" />
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>
