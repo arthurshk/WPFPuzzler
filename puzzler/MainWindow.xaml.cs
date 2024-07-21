@@ -35,6 +35,9 @@ namespace puzzler
 
         private void LoadPuzzlePieces(BitmapImage bitmap)
         {
+            double scale = 0.5;  
+            TransformedBitmap scaledBitmap = new TransformedBitmap(bitmap, new ScaleTransform(scale, scale));
+
             int rows = 4;
             int cols = 4;
             double pieceWidth = bitmap.PixelWidth / cols;
