@@ -44,6 +44,7 @@ namespace puzzler
             double pieceHeight = scaledBitmap.PixelHeight / rows;
 
             PiecesPanel.Children.Clear();
+            PiecesPanel.Visibility = Visibility.Visible;
 
             for (int i = 0; i < rows; i++)
             {
@@ -85,8 +86,16 @@ namespace puzzler
                 double offsetX = currentPosition.X - _startPoint.X;
                 double offsetY = currentPosition.Y - _startPoint.Y;
 
-                Canvas.SetLeft(_draggedPiece, Canvas.GetLeft(_draggedPiece) + offsetX);
-                Canvas.SetTop(_draggedPiece, Canvas.GetTop(_draggedPiece) + offsetY);
+                double newLeft = Canvas.GetLeft(_draggedPiece) + offsetX;
+                double newTop = Canvas.GetTop(_draggedPiece) + offsetY;
+
+                if (newLeft < 0) newLeft = 0;
+                if (newTop < 0) newTop = 0;
+                if (newLeft + _draggedPiece.Width > PuzzleArea.ActualWidth) newLeft = PuzzleArea.ActualWidth - _draggedPiece.Width;
+                if (newTop + _draggedPiece.Height > PuzzleArea.ActualHeight) newTop = PuzzleArea.ActualHeight - _draggedPiece.Height;
+
+                Canvas.SetLeft(_draggedPiece, newLeft);
+                Canvas.SetTop(_draggedPiece, newTop);
 
                 _startPoint = currentPosition;
             }
@@ -100,8 +109,16 @@ namespace puzzler
                 _isDragging = false;
 
                 Point dropPosition = e.GetPosition(PuzzleArea);
-                Canvas.SetLeft(_draggedPiece, dropPosition.X - _draggedPiece.Width / 2);
-                Canvas.SetTop(_draggedPiece, dropPosition.Y - _draggedPiece.Height / 2);
+                double newLeft = dropPosition.X - _draggedPiece.Width / 2;
+                double newTop = dropPosition.Y - _draggedPiece.Height / 2;
+
+                if (newLeft < 0) newLeft = 0;
+                if (newTop < 0) newTop = 0;
+                if (newLeft + _draggedPiece.Width > PuzzleArea.ActualWidth) newLeft = PuzzleArea.ActualWidth - _draggedPiece.Width;
+                if (newTop + _draggedPiece.Height > PuzzleArea.ActualHeight) newTop = PuzzleArea.ActualHeight - _draggedPiece.Height;
+
+                Canvas.SetLeft(_draggedPiece, newLeft);
+                Canvas.SetTop(_draggedPiece, newTop);
 
                 if (_draggedPiece.Parent is Panel oldParent)
                 {
@@ -110,7 +127,7 @@ namespace puzzler
 
                 PuzzleArea.Children.Add(_draggedPiece);
                 CheckPuzzleSolved();
-                if(PiecesPanel.Children.Count == 0)
+                if (PiecesPanel.Children.Count == 0)
                 {
                     PiecesPanel.Visibility = Visibility.Collapsed;
                 }
