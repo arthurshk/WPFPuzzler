@@ -35,13 +35,13 @@ namespace puzzler
 
         private void LoadPuzzlePieces(BitmapImage bitmap)
         {
-            double scale = 0.5;  
+            double scale = 0.5;
             TransformedBitmap scaledBitmap = new TransformedBitmap(bitmap, new ScaleTransform(scale, scale));
 
             int rows = 4;
             int cols = 4;
-            double pieceWidth = bitmap.PixelWidth / cols;
-            double pieceHeight = bitmap.PixelHeight / rows;
+            double pieceWidth = scaledBitmap.PixelWidth / cols;
+            double pieceHeight = scaledBitmap.PixelHeight / rows;
 
             PiecesPanel.Children.Clear();
 
@@ -49,7 +49,7 @@ namespace puzzler
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    CroppedBitmap croppedBitmap = new CroppedBitmap(bitmap, new Int32Rect(j * (int)pieceWidth, i * (int)pieceHeight, (int)pieceWidth, (int)pieceHeight));
+                    CroppedBitmap croppedBitmap = new CroppedBitmap(scaledBitmap, new Int32Rect(j * (int)pieceWidth, i * (int)pieceHeight, (int)pieceWidth, (int)pieceHeight));
                     Image piece = new Image
                     {
                         Width = pieceWidth,
@@ -124,8 +124,8 @@ namespace puzzler
                     Point originalPosition = (Point)piece.Tag;
                     Point currentPosition = new Point(Canvas.GetLeft(piece), Canvas.GetTop(piece));
 
-                    double correctX = originalPosition.X * piece.Width;
-                    double correctY = originalPosition.Y * piece.Height;
+                    double correctX = originalPosition.X * piece.Width + piece.Width / 2;
+                    double correctY = originalPosition.Y * piece.Height + piece.Height / 2;
 
                     if (Math.Abs(correctX - currentPosition.X) > piece.Width / 10 || Math.Abs(correctY - currentPosition.Y) > piece.Height / 10)
                     {
