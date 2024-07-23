@@ -110,6 +110,10 @@ namespace puzzler
 
                 PuzzleArea.Children.Add(_draggedPiece);
                 CheckPuzzleSolved();
+                if(PiecesPanel.Children.Count == 0)
+                {
+                    PiecesPanel.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
